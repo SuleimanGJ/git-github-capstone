@@ -1,6 +1,7 @@
 import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import request from "supertest";
+import mongoose from "mongoose";
 
 import app from "../src/app.js";
 import { connectDB } from "../src/db/db.js";
