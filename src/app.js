@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
     res.send("App is working...")
 });
 
-app.use("api/todo", todoRouter);
+app.use("/api/todo", todoRouter);
 
 
 export default app;
