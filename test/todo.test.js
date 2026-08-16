@@ -36,3 +36,7 @@ test("POST /api/todo rejects invalid data", async () => {
 
     assert.equal(response.statusCode, 400);
 });
+
+test.after(async () => {
+    await mongoose.connection.close();
+});
