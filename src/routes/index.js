@@ -32,4 +32,22 @@ router.post("/", async (req, res) => {
     });
 });
 
+router.put("/id", async (req, res) => {
+            const todoId = req.params.id;
+            const todo = await Todo.findById({_id: todoId});
+    
+            const {title, description, completed} = req.body;
+    
+            todo.title = title;
+            todo.description = description;
+            todo.completed = completed;
+    
+            const updatedTodo = await todo.save();
+    
+            return res.json({
+                data: updatedTodo,
+                message: "Todo updated successfully"
+            });
+})
+
 export { router };
