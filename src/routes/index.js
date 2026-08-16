@@ -1,71 +1,71 @@
 import express from "express";
-const router = express.Router();
+const todoRouter = express.Router();
 import { Todo } from "../db/db.js";
 
-router.get("/", async (req, res) => {
+todoRouter.get("/", async (req, res) => {
     try {
         const todos = await Todo.find({});
-        if (!todos) return res.status.json({ message: "Todo not found" });
+        if (!todos) return res.status(404).json({ message: "Todo not found" });
 
-        return res.json({
+        return res.status(200).json({
             data: todos,
             message: "Todos fetched successfully"
         });
     } catch (error) {
         console.log(`Error something went wrong ${error.message}`)
-        return res.json({
+        return res.status(500).json({
             message: "Error something went wrong"
         });
     }
 });
 
-router.get("/id", async (req, res) => {
+todoRouter.get("/:id", async (req, res) => {
     try {
         const todoId = req.params.id;
         const todos = await TodoModel.findOne({ _id: todoId });
-        if (!todos) return res.status.json({ message: "Todo not found" });
+        if (!todos) return res.status(404).json({ message: "Todo not found" });
 
-        return res.json({
+        return res.status(200).json({
             data: todos,
             message: "Todos fetched successfully"
         });
     } catch (error) {
         console.log(`Error something went wrong ${error.message}`)
-        return res.json({
+        return res.status(500).json({
             message: "Error something went wrong"
         });
     }
 });
 
 
-router.post("/", async (req, res) => {
+todoRouter.post("/", async (req, res) => {
     try {
         const { title, description, completed } = req.body;
-        if (!title || !description) return res.json({ message: "Invalid inputs" });
+        if (!title || !description) return res.status(400).json({ message: "Invalid inputs" });
 
-        const todos = await TodoModel({ title, description, completed });
+        const todos = await Todo({ title, description, completed });
         await todos.save();
 
-        return res.json({
+        return res.status(201).json({
             data: todos,
             message: "Todo created successfully"
         });
     } catch (error) {
         console.log(`Error something went wrong ${error.message}`)
-        return res.json({
+        return res.status(500).json({
             message: "Error something went wrong"
         });
     }
 });
 
-router.put("/id", async (req, res) => {
+todoRouter.put("/:id", async (req, res) => {
     try {
         const todoId = req.params.id;
-        const todo = await Todo.findById({ _id: todoId });
-        if (!todo) return res.status.json({ message: "Todo not found" });
+        const todo = await Todo.findById({ todoId });
+        if (!todo) return res.status(404).json({ message: "Todo not found" });
 
         const { title, description, completed } = req.body;
-        if (!title || !description ) return res.json({ message: "Invalid inputs" });
+        if (!title || !description) return res.status(400).json({ message: "Invalid inputs" });
 
         todo.title = title;
         todo.description = description;
@@ -73,36 +73,36 @@ router.put("/id", async (req, res) => {
 
         const updatedTodo = await todo.save();
 
-        return res.json({
+        return res.status(200).json({
             data: updatedTodo,
             message: "Todo updated successfully"
         });
     } catch (error) {
         console.log(`Error something went wrong ${error.message}`)
-        return res.json({
+        return res.status(500).json({
             message: "Error something went wrong"
         });
     }
 });
 
-router.delete("/id", async (req, res) => {
+todoRouter.delete("/:id", async (req, res) => {
     try {
         const todoId = req.params.id;
         const todo = await Todo.findById({ _id: todoId });
-        if (!todo) return res.status.json({ message: "Todo not found" });
+        if (!todo) return res.status(404).json({ message: "Todo not found" });
 
-        const deletedTodo = await Todo.findByIdAndDelete({ todoId });
+        const deletedTodo = await Todo.findByIdAndDelete( todoId );
 
-        return res.json({
+        return res.status(200).json({
             data: deletedTodo,
             message: "Todo deleted successfully"
         });
     } catch (error) {
         console.log(`Error something went wrong ${error.message}`)
-        return res.json({
+        return res.status(500).json({
             message: "Error something went wrong"
         });
     }
 });
 
-export { router };
+export { todoRouter };
