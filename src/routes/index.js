@@ -20,16 +20,16 @@ router.get("/id", async (req, res) => {
 });
 
 
-router.put("/", async (req, res) => {
+router.post("/", async (req, res) => {
     const { title, description, completed } = req.body;
 
-    const todos = await TodoModel({ title, description, completed })
+    const todos = await TodoModel({ title, description, completed });
     await todos.save();
 
     return res.json({
         data: todos,
         message: "Todo created successfully"
     });
-})
+});
 
 export { router };
