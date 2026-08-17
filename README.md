@@ -178,7 +178,8 @@ Change:
 
 ```text
 https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-** to your actual repository URL. ** ```
+** to your actual repository URL. **
+```
 
 2. Check your environment variable
 
